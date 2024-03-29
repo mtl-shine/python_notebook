@@ -94,7 +94,48 @@ while True:
             print_not_found()
     elif command == '/show':
         print(notebook)
-
+    elif command == '/change':
+        name = input('Введите ФИО контакта, который Вы хотели бы изменить: ')
+        try:
+            notebook[name]
+            change = input('Введите номер изменения, которое бы вы хотели внести:\n 1. Изменить имя контакта\n 2. Внести дополнительный номер телефона\n 3. Изменить имеющийся номер телефона\n 4. Удалить имеющийся номер телефона\n 5. Изменить дату рождения\n 6. Изменить email\n ')
+            print(change)
+            if change == '1':
+                new_name = enter_the_name()
+                notebook[new_name] = notebook.pop(name)
+                print_success_changes()
+            elif change == '2':
+                add_phone_number(name)
+                ask_for_additional_num(add_phone_number, name)
+                print_success_changes()
+            elif change == '3':
+                if len(notebook[name]['phone_numbers']) > 1:
+                    print_list_of_numbers(name)
+                    num = int(input('Введите порядковый номер телефона, который Вы хотели бы изменить: '))
+                    notebook[name]['phone_numbers'][num - 1] = input('Введите новый номер телефона: ')
+                    print_success_changes()
+                else:
+                    notebook[name]['phone_numbers'] = input('Введите новый номер телефона: ')
+                    print_success_changes()
+            elif change == '4':
+                if len(notebook[name]['phone_numbers']) > 1:
+                    print_list_of_numbers(name)
+                    num = int(input('Введите порядковый номер телефона, который Вы хотели бы удалить: '))
+                    del notebook[name]['phone_numbers'][num - 1]
+                    print_success_changes()
+                else:
+                    del notebook[name]['phone_numbers'][0]
+                    print_success_changes()
+            elif change == '5':
+                change_date(name)
+                print_success_changes()
+            elif change == '6':
+                change_email(name)
+                print_success_changes()
+            else:
+                print('К сожалению, выбранный номер отсутствует в списке. Также, пожалуйста, убедитесь в отсутствии пробелов и знаков пунктуации при вводе номера')
+        except:
+            print_not_found()
     elif command == '/interrupt':
         break
     elif command == '/help':
